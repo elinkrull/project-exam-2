@@ -1,9 +1,7 @@
+import { Button } from "react-bootstrap";
+
 function App() {
-  return (
-    <>
-      <h1>Hello</h1>
-    </>
-  );
+  return <Button>Hello</Button>;
 }
 
 export default App;
