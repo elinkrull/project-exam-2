@@ -1,7 +1,12 @@
-import { Button } from "react-bootstrap";
+import React from "react";
+import Home from "./pages/Home";
 
 function App() {
-  return <Button variant="success">Hello</Button>;
+  return (
+    <>
+      <Home />
+    </>
+  );
 }
 
 export default App;

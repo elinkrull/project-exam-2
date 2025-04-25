@@ -1,4 +1,11 @@
-$success: #f2105b;
-$primary: #2cbf36;
+$link-color: #090808;
+$primary: rgba(222, 235, 238, 1);
+$secundary: rgba(185, 206, 211, 1);
+
+.home {
+  background-color: $primary;
+  min-height: 100vh;
+  padding: 2rem;
+}
 
 @import "bootstrap/scss/bootstrap";
