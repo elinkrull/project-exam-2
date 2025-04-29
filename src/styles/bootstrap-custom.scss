@@ -15,11 +15,19 @@ $secundary: rgba(185, 206, 211, 1);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: rgba(222, 235, 238, 1);
+  padding: 30px;
+}
+
+.logo {
+  padding-left: 120px;
 }
 
 .footer {
   display: flex;
   justify-content: center;
+  background-color: rgba(222, 235, 238, 1);
+  padding: 20px;
 }
 
 @import "bootstrap/scss/bootstrap";
