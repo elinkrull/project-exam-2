@@ -2,10 +2,24 @@ $link-color: #090808;
 $primary: rgba(222, 235, 238, 1);
 $secundary: rgba(185, 206, 211, 1);
 
+.homepage {
+  min-height: 100vh;
+}
+
 .home {
   background-color: $primary;
-  min-height: 100vh;
   padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
 }
 
 @import "bootstrap/scss/bootstrap";
