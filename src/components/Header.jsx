@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 function Header() {
   return (
     <header className="header">
-      <h1>Holidaze</h1>
+      <h1 className="logo">Holidaze</h1>
       <Navbar />
     </header>
   );

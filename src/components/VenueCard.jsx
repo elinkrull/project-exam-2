@@ -1,30 +1,20 @@
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 
-function VenueCard() {
+function VenueCard({ title, image, price, guests, location }) {
   return (
-    <Card style={{ width: "18rem" }}>
+    <Card style={{ width: "100%" }}>
+      <Card.Img variant="top" src={image} alt={title} />
       <Card.Body>
-        <Card.Img
-          variant="top"
-          src="https://via.placeholder.com/286x180.png?text=Venue+Image"
-        />
-
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>{title}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{location}</Card.Subtitle>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          <strong>Price:</strong> ${price} / night
         </Card.Text>
       </Card.Body>
       <ListGroup className="list-group-flush">
-        <ListGroup.Item>Venue Name</ListGroup.Item>
-
-        <ListGroup.Item>Price/night</ListGroup.Item>
-        <ListGroup.Item>Max number of guests</ListGroup.Item>
+        <ListGroup.Item>Max guests: {guests}</ListGroup.Item>
       </ListGroup>
-      <Card.Body>
-        <Card.Link href="#">Card Link</Card.Link>
-      </Card.Body>
     </Card>
   );
 }
