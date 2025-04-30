@@ -24,11 +24,6 @@ function VenueDetails() {
           `https://v2.api.noroff.dev/holidaze/venues/${id}`
         );
         const json = await response.json();
-        // 🔍 Log the entire API response
-        console.log("API response:", json);
-
-        // If you only want the venue data:
-        console.log("Venue data:", json.data);
 
         setVenue(json.data);
       } catch (error) {

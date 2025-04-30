@@ -17,7 +17,20 @@ function Home() {
           "https://v2.api.noroff.dev/holidaze/venues"
         );
         const data = await response.json();
-        setVenues(data.data.slice(0, 12)); // only first 12 venues
+        const filteredVenues = data.data.filter((venue) => {
+          const name = venue.name?.toLowerCase() || "";
+
+          const hasValidName =
+            !name.includes("test") && !/(.)\1\1+/i.test(name); // filters names like "ggg", "aaa", etc.
+
+          const city = venue.location?.city?.trim();
+          const country = venue.location?.country?.trim();
+          const hasLocation = city && country;
+
+          return hasValidName && hasLocation;
+        });
+
+        setVenues(filteredVenues.slice(0, 12));
       } catch (error) {
         console.error("Failed to fetch venues:", error);
       }
