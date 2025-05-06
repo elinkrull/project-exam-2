@@ -1,43 +1,78 @@
 import { useState } from "react";
 import { Modal, Button, Form, Row, Col, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-function RegisterModal({ show, handleClose }) {
+function LoginModal({ show, handleClose }) {
+  const navigate = useNavigate();
   const [userType, setUserType] = useState("customer");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors("");
-  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.password) {
-      return setErrors("All fields are required.");
+    const { email, password } = formData;
+
+    if (!email || !password) {
+      return setError("All fields are required.");
     }
 
-    if (!formData.email.endsWith("@stud.noroff.no")) {
-      return setErrors("Email must be a @stud.noroff.no address.");
-    }
+    try {
+      // Login
+      const loginRes = await fetch("https://v2.api.noroff.dev/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // Simulate successful registration
-    console.log("Registering as:", userType, formData);
-    // handleClose();
-    // Redirect to profile here if needed
+      const loginData = await loginRes.json();
+      if (!loginRes.ok) {
+        throw new Error(loginData.errors?.[0]?.message || "Login failed.");
+      }
+
+      const accessToken = loginData.data.accessToken;
+      const profile = loginData.data;
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user", JSON.stringify(profile));
+
+      // Get API key
+      const keyRes = await fetch(
+        "https://v2.api.noroff.dev/auth/create-api-key",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      const keyData = await keyRes.json();
+      if (!keyRes.ok) {
+        throw new Error(
+          keyData.errors?.[0]?.message || "API key creation failed."
+        );
+      }
+
+      const apiKey = keyData.data.key;
+      localStorage.setItem("apiKey", apiKey);
+
+      handleClose();
+      navigate("/profile");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>
-          Register as {userType === "manager" ? "Venue Manager" : "Customer"}
+          Login as {userType === "manager" ? "Venue Manager" : "Customer"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -60,20 +95,9 @@ function RegisterModal({ show, handleClose }) {
           </Col>
         </Row>
 
-        {errors && <Alert variant="danger">{errors}</Alert>}
+        {error && <Alert variant="danger">{error}</Alert>}
 
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Full Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label>Email (@stud.noroff.no)</Form.Label>
             <Form.Control
@@ -98,7 +122,7 @@ function RegisterModal({ show, handleClose }) {
           </Form.Group>
 
           <Button type="submit" className="w-100">
-            Register
+            Login
           </Button>
         </Form>
       </Modal.Body>
@@ -106,4 +130,4 @@ function RegisterModal({ show, handleClose }) {
   );
 }
 
-export default RegisterModal;
+export default LoginModal;
