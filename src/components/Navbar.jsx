@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container, Modal } from "react-bootstrap";
-import RegisterModal from "./RegisterModal";
-import LoginModal from "./LoginModal";
+import RegisterModal from "../pages/RegisterModal";
+import LoginModal from "../pages/LoginModal";
 
 function NavBar() {
   const [showRegister, setShowRegister] = useState(false);
