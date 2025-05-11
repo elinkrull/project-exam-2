@@ -22,7 +22,7 @@ function LoginModal({ show, handleClose }) {
     }
 
     try {
-      // Login
+      // 1. Login
       const loginRes = await fetch("https://v2.api.noroff.dev/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,12 +35,9 @@ function LoginModal({ show, handleClose }) {
       }
 
       const accessToken = loginData.data.accessToken;
-      const profile = loginData.data;
+      const userName = loginData.data.name;
 
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("user", JSON.stringify(profile));
-
-      // Get API key
+      // 2. Create API key
       const keyRes = await fetch(
         "https://v2.api.noroff.dev/auth/create-api-key",
         {
@@ -59,11 +56,39 @@ function LoginModal({ show, handleClose }) {
       }
 
       const apiKey = keyData.data.key;
+
+      // 3. Fetch user profile
+      const profileRes = await fetch(
+        `https://v2.api.noroff.dev/holidaze/profiles/${userName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+
+      const profileData = await profileRes.json();
+      if (!profileRes.ok) {
+        throw new Error(
+          profileData.errors?.[0]?.message || "Failed to fetch profile."
+        );
+      }
+
+      // 4. Merge user info and store
+      const fullUserData = {
+        ...loginData.data, // contains venueManager, name, email, etc.
+        ...profileData.data, // contains avatar, bookings, venues etc.
+      };
+
+      localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("apiKey", apiKey);
+      localStorage.setItem("user", JSON.stringify(fullUserData));
 
       handleClose();
       navigate("/profile");
     } catch (err) {
+      console.error("Login error:", err);
       setError(err.message);
     }
   };
@@ -106,7 +131,6 @@ function LoginModal({ show, handleClose }) {
               value={formData.email}
               onChange={handleChange}
               required
-              pattern="^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$"
             />
           </Form.Group>
 
