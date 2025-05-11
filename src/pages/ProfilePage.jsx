@@ -1,11 +1,49 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  ListGroup,
+  Spinner,
+} from "react-bootstrap";
+import NewVenueForm from "../components/NewVenueForm";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showNewVenueForm, setShowNewVenueForm] = useState(false);
   const navigate = useNavigate();
+
+  const fetchData = async (parsedUser, accessToken) => {
+    try {
+      const endpoint = parsedUser.venueManager
+        ? `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`
+        : `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings`;
+
+      const res = await fetch(endpoint, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const result = await res.json();
+
+      if (!res.ok)
+        throw new Error(result.errors?.[0]?.message || "Failed to load");
+
+      setData(result.data);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -26,34 +64,7 @@ function ProfilePage() {
     }
 
     setUser(parsedUser);
-    console.log("Parsed user:", parsedUser);
-
-    const fetchData = async () => {
-      try {
-        const endpoint = parsedUser.venueManager
-          ? `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`
-          : `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings`;
-
-        const res = await fetch(endpoint, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        const result = await res.json();
-
-        if (!res.ok)
-          throw new Error(result.errors?.[0]?.message || "Failed to load");
-
-        setData(result.data);
-      } catch (error) {
-        console.error("Error loading data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchData(parsedUser, accessToken);
   }, [navigate]);
 
   const handleLogout = () => {
@@ -61,53 +72,82 @@ function ProfilePage() {
     navigate("/");
   };
 
-  if (!user) return <div>Loading profile...</div>;
+  const handleVenueCreated = () => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const accessToken = localStorage.getItem("accessToken");
+    fetchData(storedUser, accessToken);
+    setShowNewVenueForm(false);
+  };
+
+  if (!user) return <Spinner animation="border" className="m-5" />;
 
   return (
-    <div className="container mt-5">
-      <h1>Welcome, {user.name}</h1>
-      <img
-        src={user.avatar || "https://placehold.co/150x150?text=No+Avatar"}
-        alt="Avatar"
-        style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-      />
-      <p>Email: {user.email}</p>
-      <button className="btn btn-danger mb-4" onClick={handleLogout}>
-        Logout
-      </button>
+    <>
+      <Header />
+      <Container className="mt-5">
+        <Row>
+          <Col md={3}>
+            <Card className="text-center">
+              <Card.Img
+                variant="top"
+                src={
+                  user.avatar || "https://placehold.co/150x150?text=No+Avatar"
+                }
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  margin: "20px auto 0",
+                }}
+              />
+              <Card.Body>
+                <Card.Title>{user.name}</Card.Title>
 
-      {user.venueManager ? (
-        <>
-          <h2>My Venues</h2>
-          {loading ? (
-            <p>Loading venues...</p>
-          ) : data.length > 0 ? (
-            <ul>
-              {data.map((venue) => (
-                <li key={venue.id}>{venue.name}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>You have no venues yet.</p>
-          )}
-        </>
-      ) : (
-        <>
-          <h2>My Bookings</h2>
-          {loading ? (
-            <p>Loading bookings...</p>
-          ) : (
-            <ul>
-              {data.map((booking) => (
-                <li key={booking.id}>
-                  {booking.venue?.name} – From: {booking.dateFrom.slice(0, 10)}
-                </li>
-              ))}
-            </ul>
-          )}
-        </>
-      )}
-    </div>
+                <Button size="sm" className="mb-2">
+                  Edit Profile
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col md={9}>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h2>{user.venueManager ? "My Venues" : "My Bookings"}</h2>
+              {user.venueManager && (
+                <Button onClick={() => setShowNewVenueForm(!showNewVenueForm)}>
+                  {showNewVenueForm ? "Cancel" : "Add Venue"}
+                </Button>
+              )}
+            </div>
+
+            {showNewVenueForm && (
+              <NewVenueForm onVenueCreated={handleVenueCreated} />
+            )}
+
+            {loading ? (
+              <Spinner animation="border" />
+            ) : data.length > 0 ? (
+              <ListGroup>
+                {data.map((item) => (
+                  <ListGroup.Item key={item.id}>
+                    {user.venueManager
+                      ? item.name
+                      : `${item.venue?.name} – From: ${item.dateFrom.slice(
+                          0,
+                          10
+                        )}`}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            ) : (
+              <p>No {user.venueManager ? "venues" : "bookings"} found.</p>
+            )}
+          </Col>
+        </Row>
+      </Container>
+      <Footer />
+    </>
   );
 }
 
