@@ -17,10 +17,6 @@ function Home() {
           "https://v2.api.noroff.dev/holidaze/venues"
         );
         const data = await response.json();
-
-        // Log API response
-        console.log("API response:", data);
-
         const filteredVenues = data.data.filter((venue) => {
           const name = venue.name?.toLowerCase() || "";
 

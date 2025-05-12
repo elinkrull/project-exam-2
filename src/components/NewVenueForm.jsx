@@ -117,7 +117,6 @@ function NewVenueForm({ onVenueCreated }) {
 
   return (
     <div className="my-4">
-      <h3>Create New Venue</h3>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">{success}</Alert>}
 

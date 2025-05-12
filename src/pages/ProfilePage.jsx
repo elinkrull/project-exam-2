@@ -9,7 +9,7 @@ import {
   ListGroup,
   Spinner,
 } from "react-bootstrap";
-import NewVenueForm from "../components/NewVenueForm";
+import NewVenueModal from "../components/NewVenueModal";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditProfileModal from "../components/EditProfileModal";
@@ -122,10 +122,11 @@ function ProfilePage() {
                 </Button>
               )}
             </div>
-
-            {showNewVenueForm && (
-              <NewVenueForm onVenueCreated={handleVenueCreated} />
-            )}
+            <NewVenueModal
+              show={showNewVenueForm}
+              handleClose={() => setShowNewVenueForm(false)}
+              onVenueCreated={handleVenueCreated}
+            />
 
             {loading ? (
               <Spinner animation="border" />
