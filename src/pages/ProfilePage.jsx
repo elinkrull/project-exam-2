@@ -12,12 +12,14 @@ import {
 import NewVenueForm from "../components/NewVenueForm";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import EditProfileModal from "../components/EditProfileModal";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNewVenueForm, setShowNewVenueForm] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const navigate = useNavigate();
 
   const fetchData = async (parsedUser, accessToken) => {
@@ -26,9 +28,12 @@ function ProfilePage() {
         ? `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`
         : `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings`;
 
+      const apiKey = localStorage.getItem("apiKey");
+
       const res = await fetch(endpoint, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
+          "X-Noroff-API-Key": apiKey,
         },
       });
 
@@ -67,11 +72,6 @@ function ProfilePage() {
     fetchData(parsedUser, accessToken);
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
-
   const handleVenueCreated = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const accessToken = localStorage.getItem("accessToken");
@@ -87,7 +87,7 @@ function ProfilePage() {
       <Container className="mt-5">
         <Row>
           <Col md={3}>
-            <Card className="text-center">
+            <Card className="text-center mb-4">
               <Card.Img
                 variant="top"
                 src={
@@ -104,7 +104,9 @@ function ProfilePage() {
               <Card.Body>
                 <Card.Title>{user.name}</Card.Title>
 
-                <Button size="sm" className="mb-2">
+                <Button
+                  className="btn btn-sm mt-2"
+                  onClick={() => setShowEditModal(true)}>
                   Edit Profile
                 </Button>
               </Card.Body>
@@ -146,6 +148,15 @@ function ProfilePage() {
           </Col>
         </Row>
       </Container>
+      {user && (
+        <EditProfileModal
+          show={showEditModal}
+          handleClose={() => setShowEditModal(false)}
+          user={user}
+          onUpdate={(updatedUser) => setUser(updatedUser)}
+        />
+      )}
+
       <Footer />
     </>
   );
