@@ -39,14 +39,17 @@ function NavBar() {
         <Container className="d-flex justify-content-end align-items-center py-3">
           {user ? (
             <div className="d-flex align-items-center gap-3">
-              <Image
-                src={user.avatar || "https://placehold.co/40x40?text=?"}
-                alt="avatar"
-                roundedCircle
-                width={40}
-                height={40}
-                style={{ objectFit: "cover" }}
-              />
+              {/* Profile Image as a clickable element to navigate to the profile page */}
+              <span role="button" onClick={goToProfile}>
+                <Image
+                  src={user.avatar || "https://placehold.co/40x40?text=?"}
+                  alt="avatar"
+                  roundedCircle
+                  width={40}
+                  height={40}
+                  style={{ objectFit: "cover", cursor: "pointer" }}
+                />
+              </span>
               <span
                 className="fw-semibold text-danger"
                 role="button"
