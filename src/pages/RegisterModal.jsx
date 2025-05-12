@@ -110,9 +110,14 @@ function RegisterModal({ show, handleClose }) {
       // 5. Save to localStorage
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("apiKey", apiKey);
-      localStorage.setItem("user", JSON.stringify(profileData.data));
 
-      // 6. Done!
+      const fullUserData = {
+        ...loginData.data,
+        ...profileData.data,
+      };
+
+      localStorage.setItem("user", JSON.stringify(fullUserData));
+
       handleClose();
       navigate("/profile");
     } catch (error) {
@@ -170,7 +175,6 @@ function RegisterModal({ show, handleClose }) {
               value={formData.email}
               onChange={handleChange}
               required
-              pattern="^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$"
             />
           </Form.Group>
 
