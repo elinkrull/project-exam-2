@@ -4,11 +4,13 @@ import Col from "react-bootstrap/Col";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import VenueCard from "../components/VenueCard";
+import SearchBar from "../components/SearchBar"; // <-- New import
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
   const [venues, setVenues] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     async function fetchVenues() {
@@ -19,17 +21,13 @@ function Home() {
         const data = await response.json();
         const filteredVenues = data.data.filter((venue) => {
           const name = venue.name?.toLowerCase() || "";
-
           const hasValidName =
             !name.includes("test") && !/(.)\1\1+/i.test(name); // filters names like "ggg", "aaa", etc.
-
           const city = venue.location?.city?.trim();
           const country = venue.location?.country?.trim();
           const hasLocation = city && country;
-
           return hasValidName && hasLocation;
         });
-
         setVenues(filteredVenues.slice(0, 12));
       } catch (error) {
         console.error("Failed to fetch venues:", error);
@@ -39,13 +37,23 @@ function Home() {
     fetchVenues();
   }, []);
 
+  const filteredVenues = venues.filter((venue) => {
+    const name = venue.name?.toLowerCase() || "";
+    const city = venue.location?.city?.toLowerCase() || "";
+    return (
+      name.includes(searchTerm.toLowerCase()) ||
+      city.includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <main className="homepage">
       <Header />
       <Container className="my-5">
         <h1 className="mb-4">Venues</h1>
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <Row className="g-4">
-          {venues.map((venue) => (
+          {filteredVenues.map((venue) => (
             <Col key={venue.id} sm={12} md={6} lg={4}>
               <Link
                 to={`/venue/${venue.id}`}
