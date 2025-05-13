@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 
 function NewVenueForm({ onVenueCreated }) {
@@ -25,12 +26,12 @@ function NewVenueForm({ onVenueCreated }) {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"));
   const accessToken = localStorage.getItem("accessToken");
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked } = e.target;
 
     if (["wifi", "parking", "breakfast", "pets"].includes(name)) {
       setFormData((prev) => ({
@@ -62,6 +63,8 @@ function NewVenueForm({ onVenueCreated }) {
     setError("");
     setSuccess("");
 
+    const apiKey = localStorage.getItem("apiKey");
+
     try {
       const response = await fetch(
         "https://v2.api.noroff.dev/holidaze/venues",
@@ -70,9 +73,11 @@ function NewVenueForm({ onVenueCreated }) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${accessToken}`,
+            "X-Noroff-API-Key": apiKey,
           },
           body: JSON.stringify({
             ...formData,
+            media: formData.media.map((url) => ({ url, alt: "Venue image" })),
             price: Number(formData.price),
             maxGuests: Number(formData.maxGuests),
           }),
@@ -86,6 +91,10 @@ function NewVenueForm({ onVenueCreated }) {
       }
 
       setSuccess("Venue created successfully!");
+      setTimeout(() => {
+        navigate("/profile");
+      }, 1500);
+
       setFormData({
         name: "",
         description: "",
@@ -160,7 +169,7 @@ function NewVenueForm({ onVenueCreated }) {
         </Form.Group>
 
         <Form.Group className="mb-2">
-          <Form.Label>Price (NOK)</Form.Label>
+          <Form.Label>Price per night ($)</Form.Label>
           <Form.Control
             type="number"
             name="price"

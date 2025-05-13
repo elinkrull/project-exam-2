@@ -133,7 +133,11 @@ function ProfilePage() {
             ) : data.length > 0 ? (
               <ListGroup>
                 {data.map((item) => (
-                  <ListGroup.Item key={item.id}>
+                  <ListGroup.Item
+                    key={item.id}
+                    action
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/venue/${item.id}`)}>
                     {user.venueManager
                       ? item.name
                       : `${item.venue?.name} – From: ${item.dateFrom.slice(
