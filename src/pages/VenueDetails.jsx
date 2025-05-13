@@ -16,6 +16,12 @@ function VenueDetails() {
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bookedDates, setBookedDates] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const accessToken = localStorage.getItem("accessToken");
+  const apiKey = localStorage.getItem("apiKey");
+
+  const [editing, setEditing] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   function handleImageClick(index) {
     setCurrentIndex(index);
@@ -31,6 +37,13 @@ function VenueDetails() {
         const venueData = json.data;
 
         setVenue(venueData);
+
+        setFormData({
+          name: venueData.name,
+          description: venueData.description,
+          price: venueData.price,
+          maxGuests: venueData.maxGuests,
+        });
 
         // 📅 Extract booked dates from bookings
         const bookings = venueData.bookings || [];
