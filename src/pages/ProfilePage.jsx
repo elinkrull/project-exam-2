@@ -137,7 +137,11 @@ function ProfilePage() {
                     key={item.id}
                     action
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate(`/venue/${item.id}`)}>
+                    onClick={() =>
+                      navigate(`/venue/${item.id}`, {
+                        state: { fromProfile: true },
+                      })
+                    }>
                     {user.venueManager
                       ? item.name
                       : `${item.venue?.name} – From: ${item.dateFrom.slice(
