@@ -36,13 +36,6 @@ function VenueDetails() {
 
         setVenue(venueData);
 
-        setFormData({
-          name: venueData.name,
-          description: venueData.description,
-          price: venueData.price,
-          maxGuests: venueData.maxGuests,
-        });
-
         // 📅 Extract booked dates from bookings
         const bookings = venueData.bookings || [];
         const dates = bookings.flatMap((booking) => {
