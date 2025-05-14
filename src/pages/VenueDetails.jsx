@@ -8,6 +8,7 @@ import Carousel from "react-bootstrap/Carousel";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ReservationBox from "../components/ReservationBox";
+import { useLocation } from "react-router-dom";
 
 function VenueDetails() {
   const { id } = useParams();
@@ -16,12 +17,9 @@ function VenueDetails() {
   const [showModal, setShowModal] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bookedDates, setBookedDates] = useState([]);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const accessToken = localStorage.getItem("accessToken");
-  const apiKey = localStorage.getItem("apiKey");
 
-  const [editing, setEditing] = useState(false);
-  const [formData, setFormData] = useState(null);
+  const location = useLocation();
+  const fromProfile = location.state?.fromProfile || false;
 
   function handleImageClick(index) {
     setCurrentIndex(index);
@@ -37,13 +35,6 @@ function VenueDetails() {
         const venueData = json.data;
 
         setVenue(venueData);
-
-        setFormData({
-          name: venueData.name,
-          description: venueData.description,
-          price: venueData.price,
-          maxGuests: venueData.maxGuests,
-        });
 
         // 📅 Extract booked dates from bookings
         const bookings = venueData.bookings || [];
@@ -133,17 +124,18 @@ function VenueDetails() {
           </Col>
 
           {/* Reservation Box */}
-          <Col md={4}>
-            <ReservationBox
-              venue={venue}
-              bookedDates={bookedDates}
-              isLoggedIn={!!localStorage.getItem("token")}
-              onBookingConfirmed={(booking) => {
-                console.log("Booking confirmed:", booking);
-                // TODO: You can add API booking logic here
-              }}
-            />
-          </Col>
+          {!fromProfile && (
+            <Col md={4}>
+              <ReservationBox
+                venue={venue}
+                bookedDates={bookedDates}
+                isLoggedIn={!!localStorage.getItem("token")}
+                onBookingConfirmed={(booking) => {
+                  console.log("Booking confirmed:", booking);
+                }}
+              />
+            </Col>
+          )}
         </Row>
       </Container>
 
