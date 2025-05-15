@@ -20,7 +20,7 @@ function Home() {
       const response = await fetch(
         `https://v2.api.noroff.dev/holidaze/venues?sort=created&sortOrder=desc&limit=12&page=${page}`
       );
-      const { data, meta } = await response.json();
+      const { data } = await response.json();
 
       const newVenues = data.filter((venue) => {
         const name = venue.name?.toLowerCase() ?? "";
@@ -32,7 +32,7 @@ function Home() {
       });
 
       setVenues((prev) => [...prev, ...newVenues]);
-      setHasMore(meta.page < meta.pageCount);
+      setHasMore(data.length > 0);
     } catch (error) {
       console.error("Failed to fetch venues:", error);
     }
