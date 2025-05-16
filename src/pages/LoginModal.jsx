@@ -81,6 +81,10 @@ function LoginModal({ show, handleClose }) {
         ...profileData.data, // contains avatar, bookings, venues etc.
       };
 
+      if (fullUserData.avatar && typeof fullUserData.avatar === "object") {
+        fullUserData.avatar = fullUserData.avatar.url;
+      }
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("apiKey", apiKey);
       localStorage.setItem("user", JSON.stringify(fullUserData));

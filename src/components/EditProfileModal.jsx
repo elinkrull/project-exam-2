@@ -54,8 +54,7 @@ function EditProfileModal({ show, handleClose, user, onUpdate }) {
         throw new Error(data.errors?.[0]?.message || "Update failed");
       }
 
-      // Update user in local storage and parent component
-      const updatedUser = { ...user, avatar: data.data.avatar.url };
+      const updatedUser = { ...user, avatar: data.data.avatar?.url || "" };
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
       onUpdate(updatedUser);
