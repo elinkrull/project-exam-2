@@ -116,10 +116,11 @@ function RegisterModal({ show, handleClose }) {
         ...profileData.data,
       };
 
-      localStorage.setItem("user", JSON.stringify(fullUserData));
-
       handleClose();
       navigate("/profile");
+
+      localStorage.setItem("user", JSON.stringify(fullUserData));
+      window.dispatchEvent(new Event("userUpdated"));
     } catch (error) {
       console.error("Error during registration:", error);
       setErrors(error.message);

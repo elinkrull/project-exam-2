@@ -87,10 +87,12 @@ function LoginModal({ show, handleClose }) {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("apiKey", apiKey);
-      localStorage.setItem("user", JSON.stringify(fullUserData));
 
       handleClose();
       navigate("/profile");
+
+      localStorage.setItem("user", JSON.stringify(fullUserData));
+      window.dispatchEvent(new Event("userUpdated"));
     } catch (err) {
       console.error("Login error:", err);
       setError(err.message);

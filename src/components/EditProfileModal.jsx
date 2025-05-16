@@ -57,6 +57,8 @@ function EditProfileModal({ show, handleClose, user, onUpdate }) {
       const updatedUser = { ...user, avatar: data.data.avatar?.url || "" };
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
+      window.dispatchEvent(new Event("userUpdated"));
+
       onUpdate(updatedUser);
       handleClose();
     } catch (err) {
