@@ -11,17 +11,29 @@ function NavBar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem("user");
+    const updateUser = () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch {
+          localStorage.removeItem("user");
+          setUser(null);
+        }
+      } else {
+        setUser(null);
       }
-    } else {
-      setUser(null);
-    }
-  }, [showLogin, showRegister]);
+    };
+
+    updateUser();
+
+    // Listen for custom "userUpdated" event
+    window.addEventListener("userUpdated", updateUser);
+
+    return () => {
+      window.removeEventListener("userUpdated", updateUser);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();

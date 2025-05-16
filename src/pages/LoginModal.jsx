@@ -81,12 +81,18 @@ function LoginModal({ show, handleClose }) {
         ...profileData.data, // contains avatar, bookings, venues etc.
       };
 
+      if (fullUserData.avatar && typeof fullUserData.avatar === "object") {
+        fullUserData.avatar = fullUserData.avatar.url;
+      }
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("apiKey", apiKey);
-      localStorage.setItem("user", JSON.stringify(fullUserData));
 
       handleClose();
       navigate("/profile");
+
+      localStorage.setItem("user", JSON.stringify(fullUserData));
+      window.dispatchEvent(new Event("userUpdated"));
     } catch (err) {
       console.error("Login error:", err);
       setError(err.message);
