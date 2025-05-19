@@ -13,6 +13,7 @@ import NewVenueModal from "../components/NewVenueModal";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditProfileModal from "../components/EditProfileModal";
+import MyVenues from "../components/MyVenues";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -166,45 +167,11 @@ function ProfilePage() {
             {loading ? (
               <Spinner animation="border" />
             ) : data.length > 0 ? (
-              <Row>
-                {data.map((venue) => (
-                  <Col md={6} lg={4} key={venue.id} className="mb-4">
-                    <Card>
-                      <Card.Img
-                        variant="top"
-                        src={
-                          venue.media?.[0]?.url ||
-                          "https://via.placeholder.com/300x180?text=No+Image"
-                        }
-                        style={{ height: "180px", objectFit: "cover" }}
-                        onClick={() =>
-                          navigate(`/venue/${venue.id}`, {
-                            state: { fromProfile: true },
-                          })
-                        }
-                      />
-                      <Card.Body>
-                        <Card.Title>{venue.name}</Card.Title>
-                        <Card.Text>${venue.price} / night</Card.Text>
-                        <div className="d-flex justify-content-between">
-                          <Button
-                            size="sm"
-                            variant="outline-primary"
-                            onClick={() => navigate(`/edit-venue/${venue.id}`)}>
-                            Edit
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline-danger"
-                            onClick={() => handleDeleteVenue(venue.id)}>
-                            Delete
-                          </Button>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
+              <MyVenues
+                venues={data}
+                onEdit={(id) => navigate(`/edit-venue/${id}`)}
+                onDelete={handleDeleteVenue}
+              />
             ) : (
               <p>No {user.venueManager ? "venues" : "bookings"} found.</p>
             )}
