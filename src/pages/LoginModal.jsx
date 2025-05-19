@@ -76,11 +76,22 @@ function LoginModal({ show, handleClose }) {
       }
 
       // 4. Merge user info and store
-      const fullUserData = {
-        ...loginData.data, // contains venueManager, name, email, etc.
-        ...profileData.data, // contains avatar, bookings, venues etc.
+      let fullUserData = {
+        ...loginData.data,
+        ...profileData.data,
       };
 
+      const isVenueManager = fullUserData.venueManager;
+      if (
+        (userType === "manager" && !isVenueManager) ||
+        (userType === "customer" && isVenueManager)
+      ) {
+        throw new Error(
+          `This account is registered as a ${
+            isVenueManager ? "Venue Manager" : "Customer"
+          }. Please select the correct role.`
+        );
+      }
       if (fullUserData.avatar && typeof fullUserData.avatar === "object") {
         fullUserData.avatar = fullUserData.avatar.url;
       }
