@@ -14,6 +14,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditProfileModal from "../components/EditProfileModal";
 import MyVenues from "../components/MyVenues";
+import MyBookings from "../components/MyBookings";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -167,17 +168,22 @@ function ProfilePage() {
             {loading ? (
               <Spinner animation="border" />
             ) : data.length > 0 ? (
-              <MyVenues
-                venues={data}
-                onEdit={(id) => navigate(`/edit-venue/${id}`)}
-                onDelete={handleDeleteVenue}
-              />
+              user.venueManager ? (
+                <MyVenues
+                  venues={data}
+                  onEdit={(id) => navigate(`/edit-venue/${id}`)}
+                  onDelete={handleDeleteVenue}
+                />
+              ) : (
+                <MyBookings bookings={data} />
+              )
             ) : (
               <p>No {user.venueManager ? "venues" : "bookings"} found.</p>
             )}
           </Col>
         </Row>
       </Container>
+
       {user && (
         <EditProfileModal
           show={showEditModal}
