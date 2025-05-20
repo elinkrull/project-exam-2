@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Card,
-  ListGroup,
-  Spinner,
-} from "react-bootstrap";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Container, Row, Col, Button, Card, Spinner } from "react-bootstrap";
 import NewVenueModal from "../components/NewVenueModal";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -18,33 +10,54 @@ import MyBookings from "../components/MyBookings";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
-  const [data, setData] = useState([]);
+  const [venues, setVenues] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showNewVenueForm, setShowNewVenueForm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchData = async (parsedUser, accessToken) => {
+    const apiKey = localStorage.getItem("apiKey");
+
     try {
-      const endpoint = parsedUser.venueManager
-        ? `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`
-        : `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings`;
-
-      const apiKey = localStorage.getItem("apiKey");
-
-      const res = await fetch(endpoint, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "X-Noroff-API-Key": apiKey,
-        },
-      });
-
-      const result = await res.json();
-
-      if (!res.ok)
-        throw new Error(result.errors?.[0]?.message || "Failed to load");
-
-      setData(result.data);
+      if (parsedUser.venueManager) {
+        // Fetch venues created by manager
+        const venuesRes = await fetch(
+          `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "X-Noroff-API-Key": apiKey,
+            },
+          }
+        );
+        const venuesResult = await venuesRes.json();
+        if (!venuesRes.ok)
+          throw new Error(
+            venuesResult.errors?.[0]?.message || "Failed to load venues"
+          );
+        setVenues(venuesResult.data);
+      } else {
+        // Fetch bookings for customer
+        const bookingsRes = await fetch(
+          `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings?_venue=true`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "X-Noroff-API-Key": apiKey,
+            },
+          }
+        );
+        const bookingsResult = await bookingsRes.json();
+        if (!bookingsRes.ok)
+          throw new Error(
+            bookingsResult.errors?.[0]?.message || "Failed to load bookings"
+          );
+        setBookings(bookingsResult.data);
+      }
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {
@@ -65,14 +78,14 @@ function ProfilePage() {
     try {
       parsedUser = JSON.parse(storedUser);
     } catch (error) {
-      console.error("Failed to parse stored user:", error, storedUser);
+      console.error("Failed to parse stored user:", error);
       navigate("/");
       return;
     }
 
     setUser(parsedUser);
     fetchData(parsedUser, accessToken);
-  }, [navigate]);
+  }, [navigate, location.key]);
 
   const handleVenueCreated = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -80,8 +93,6 @@ function ProfilePage() {
     fetchData(storedUser, accessToken);
     setShowNewVenueForm(false);
   };
-
-  if (!user) return <Spinner animation="border" className="m-5" />;
 
   const handleDeleteVenue = async (venueId) => {
     const confirm = window.confirm(
@@ -118,6 +129,8 @@ function ProfilePage() {
     }
   };
 
+  if (!user) return <Spinner animation="border" className="m-5" />;
+
   return (
     <>
       <Header />
@@ -140,7 +153,6 @@ function ProfilePage() {
               />
               <Card.Body>
                 <Card.Title>{user.name}</Card.Title>
-
                 <Button
                   className="btn btn-sm mt-2"
                   onClick={() => setShowEditModal(true)}>
@@ -152,13 +164,14 @@ function ProfilePage() {
 
           <Col md={9}>
             <div className="d-flex justify-content-between align-items-center mb-3">
-              <h2>{user.venueManager ? "My Venues" : "My Bookings"}</h2>
+              <h2>My Profile</h2>
               {user.venueManager && (
                 <Button onClick={() => setShowNewVenueForm(!showNewVenueForm)}>
                   {showNewVenueForm ? "Cancel" : "Add Venue"}
                 </Button>
               )}
             </div>
+
             <NewVenueModal
               show={showNewVenueForm}
               handleClose={() => setShowNewVenueForm(false)}
@@ -167,18 +180,32 @@ function ProfilePage() {
 
             {loading ? (
               <Spinner animation="border" />
-            ) : data.length > 0 ? (
-              user.venueManager ? (
-                <MyVenues
-                  venues={data}
-                  onEdit={(id) => navigate(`/edit-venue/${id}`)}
-                  onDelete={handleDeleteVenue}
-                />
-              ) : (
-                <MyBookings bookings={data} />
-              )
             ) : (
-              <p>No {user.venueManager ? "venues" : "bookings"} found.</p>
+              <>
+                {user.venueManager ? (
+                  <>
+                    <h3 className="mb-3">My Venues</h3>
+                    {venues.length > 0 ? (
+                      <MyVenues
+                        venues={venues}
+                        onEdit={(id) => navigate(`/edit-venue/${id}`)}
+                        onDelete={handleDeleteVenue}
+                      />
+                    ) : (
+                      <p>No venues found.</p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <h3 className="mb-3">My Bookings</h3>
+                    {bookings.length > 0 ? (
+                      <MyBookings bookings={bookings} />
+                    ) : (
+                      <p>No bookings found.</p>
+                    )}
+                  </>
+                )}
+              </>
             )}
           </Col>
         </Row>
