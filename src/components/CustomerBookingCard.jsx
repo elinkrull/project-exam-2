@@ -21,7 +21,7 @@ export default function CustomerBookingCard({ booking }) {
         }
       />
       <Card.Body>
-        <Card.Title>{venue?.name || "Unnamed Venue"}</Card.Title>
+        <Card.Title>{venue?.name || "Unknown Venue"}</Card.Title>
         <Card.Text>
           <strong>${venue?.price ?? "N/A"}</strong> / night
           <br />

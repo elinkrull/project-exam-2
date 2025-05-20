@@ -28,7 +28,7 @@ function ProfilePage() {
     try {
       const endpoint = parsedUser.venueManager
         ? `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`
-        : `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings`;
+        : `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/bookings?_venue=true`;
 
       const apiKey = localStorage.getItem("apiKey");
 
