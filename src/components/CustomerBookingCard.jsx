@@ -5,6 +5,42 @@ export default function CustomerBookingCard({ booking }) {
   const navigate = useNavigate();
   const venue = booking.venue;
 
+  const handleCancelBooking = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to cancel this booking?"
+    );
+    if (!confirm) return;
+
+    const accessToken = localStorage.getItem("accessToken");
+    const apiKey = localStorage.getItem("apiKey");
+
+    try {
+      const res = await fetch(
+        `https://v2.api.noroff.dev/holidaze/bookings/${booking.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(
+          error.errors?.[0]?.message || "Failed to cancel booking"
+        );
+      }
+
+      // Refresh the profile page to reflect the canceled booking
+      window.location.reload();
+    } catch (error) {
+      console.error("Error cancelling booking:", error);
+      alert("Failed to cancel booking.");
+    }
+  };
+
   return (
     <Card className="mb-4">
       <Card.Img
@@ -31,7 +67,7 @@ export default function CustomerBookingCard({ booking }) {
           <br />
           Guests: {booking.guests}
         </Card.Text>
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-between">
           <Button
             size="sm"
             variant="outline-secondary"
@@ -41,6 +77,12 @@ export default function CustomerBookingCard({ booking }) {
               })
             }>
             View Venue
+          </Button>
+          <Button
+            size="sm"
+            variant="outline-danger"
+            onClick={handleCancelBooking}>
+            Cancel Booking
           </Button>
         </div>
       </Card.Body>

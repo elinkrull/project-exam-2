@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ReservationBox from "../components/ReservationBox";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function VenueDetails() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ function VenueDetails() {
 
   const location = useLocation();
   const fromProfile = location.state?.fromProfile || false;
+  const navigate = useNavigate();
 
   function handleImageClick(index) {
     setCurrentIndex(index);
@@ -130,8 +132,13 @@ function VenueDetails() {
                 venue={venue}
                 bookedDates={bookedDates}
                 isLoggedIn={!!localStorage.getItem("token")}
-                onBookingConfirmed={(booking) => {
-                  console.log("Booking confirmed:", booking);
+                onBookingConfirmed={() => {
+                  navigate("/profile", {
+                    state: {
+                      bookingSuccess: true,
+                      refreshBookings: Date.now(),
+                    },
+                  });
                 }}
               />
             </Col>

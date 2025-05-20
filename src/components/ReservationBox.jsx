@@ -29,19 +29,44 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
     setShowModal(true);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const apiKey = localStorage.getItem("apiKey");
+
     const bookingData = {
       dateFrom: range[0].startDate,
       dateTo: range[0].endDate,
       guests,
+      venueId: venue.id,
     };
-    onBookingConfirmed(bookingData);
-    setShowModal(false);
-    setShowToast(true);
 
-    setTimeout(() => {
-      navigate("/profile");
-    }, 2000);
+    try {
+      const res = await fetch("https://v2.api.noroff.dev/holidaze/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+          "X-Noroff-API-Key": apiKey,
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.errors?.[0]?.message || "Booking failed");
+      }
+
+      setShowModal(false);
+      setShowToast(true);
+
+      setTimeout(() => {
+        navigate("/profile", { state: { refreshBookings: Date.now() } });
+      }, 1000);
+    } catch (error) {
+      console.error("Booking error:", error);
+      alert("Booking failed. Please try again.");
+    }
   };
 
   return (
