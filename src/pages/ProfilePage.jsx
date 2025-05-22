@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Row, Col, Button, Card, Spinner } from "react-bootstrap";
 import NewVenueModal from "../components/NewVenueModal";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import EditProfileModal from "../components/EditProfileModal";
 import MyVenues from "../components/MyVenues";
 import MyBookings from "../components/MyBookings";
+import Layout from "../components/Layout";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -133,94 +132,94 @@ function ProfilePage() {
 
   return (
     <>
-      <Header />
-      <Container className="mt-5">
-        <Row>
-          <Col md={3}>
-            <Card className="text-center mb-4">
-              <Card.Img
-                variant="top"
-                src={
-                  user.avatar || "https://placehold.co/150x150?text=No+Avatar"
-                }
-                style={{
-                  width: "150px",
-                  height: "150px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  margin: "20px auto 0",
-                }}
-              />
-              <Card.Body>
-                <Card.Title>{user.name}</Card.Title>
-                <Button
-                  className="btn btn-sm mt-2"
-                  onClick={() => setShowEditModal(true)}>
-                  Edit Profile
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
+      <Layout>
+        <Container className="mt-5">
+          <Row>
+            <Col md={3}>
+              <Card className="text-center mb-4">
+                <Card.Img
+                  variant="top"
+                  src={
+                    user.avatar || "https://placehold.co/150x150?text=No+Avatar"
+                  }
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    margin: "20px auto 0",
+                  }}
+                />
+                <Card.Body>
+                  <Card.Title>{user.name}</Card.Title>
+                  <Button
+                    className="btn btn-sm mt-2"
+                    onClick={() => setShowEditModal(true)}>
+                    Edit Profile
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
 
-          <Col md={9}>
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h2>My Profile</h2>
-              {user.venueManager && (
-                <Button onClick={() => setShowNewVenueForm(!showNewVenueForm)}>
-                  {showNewVenueForm ? "Cancel" : "Add Venue"}
-                </Button>
-              )}
-            </div>
-
-            <NewVenueModal
-              show={showNewVenueForm}
-              handleClose={() => setShowNewVenueForm(false)}
-              onVenueCreated={handleVenueCreated}
-            />
-
-            {loading ? (
-              <Spinner animation="border" />
-            ) : (
-              <>
-                {user.venueManager ? (
-                  <>
-                    <h3 className="mb-3">My Venues</h3>
-                    {venues.length > 0 ? (
-                      <MyVenues
-                        venues={venues}
-                        onEdit={(id) => navigate(`/edit-venue/${id}`)}
-                        onDelete={handleDeleteVenue}
-                      />
-                    ) : (
-                      <p>No venues found.</p>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <h3 className="mb-3">My Bookings</h3>
-                    {bookings.length > 0 ? (
-                      <MyBookings bookings={bookings} />
-                    ) : (
-                      <p>No bookings found.</p>
-                    )}
-                  </>
+            <Col md={9}>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h2>My Profile</h2>
+                {user.venueManager && (
+                  <Button
+                    onClick={() => setShowNewVenueForm(!showNewVenueForm)}>
+                    {showNewVenueForm ? "Cancel" : "Add Venue"}
+                  </Button>
                 )}
-              </>
-            )}
-          </Col>
-        </Row>
-      </Container>
+              </div>
 
-      {user && (
-        <EditProfileModal
-          show={showEditModal}
-          handleClose={() => setShowEditModal(false)}
-          user={user}
-          onUpdate={(updatedUser) => setUser(updatedUser)}
-        />
-      )}
+              <NewVenueModal
+                show={showNewVenueForm}
+                handleClose={() => setShowNewVenueForm(false)}
+                onVenueCreated={handleVenueCreated}
+              />
 
-      <Footer />
+              {loading ? (
+                <Spinner animation="border" />
+              ) : (
+                <>
+                  {user.venueManager ? (
+                    <>
+                      <h3 className="mb-3">My Venues</h3>
+                      {venues.length > 0 ? (
+                        <MyVenues
+                          venues={venues}
+                          onEdit={(id) => navigate(`/edit-venue/${id}`)}
+                          onDelete={handleDeleteVenue}
+                        />
+                      ) : (
+                        <p>No venues found.</p>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="mb-3">My Bookings</h3>
+                      {bookings.length > 0 ? (
+                        <MyBookings bookings={bookings} />
+                      ) : (
+                        <p>No bookings found.</p>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </Col>
+          </Row>
+        </Container>
+
+        {user && (
+          <EditProfileModal
+            show={showEditModal}
+            handleClose={() => setShowEditModal(false)}
+            user={user}
+            onUpdate={(updatedUser) => setUser(updatedUser)}
+          />
+        )}
+      </Layout>
     </>
   );
 }

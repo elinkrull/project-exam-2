@@ -1,12 +1,11 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import VenueCard from "../components/VenueCard";
 import SearchBar from "../components/SearchBar";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 function Home() {
   const [venues, setVenues] = useState([]);
@@ -67,8 +66,7 @@ function Home() {
   });
 
   return (
-    <main className="homepage">
-      <Header />
+    <Layout>
       <Container className="my-5">
         <h1 className="mb-4">Venues</h1>
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -98,8 +96,7 @@ function Home() {
           {hasMore ? <p>Loading more venues...</p> : <p>No more venues</p>}
         </div>
       </Container>
-      <Footer />
-    </main>
+    </Layout>
   );
 }
 
