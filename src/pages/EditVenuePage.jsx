@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Form, Button, Spinner, Alert } from "react-bootstrap";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Layout from "../components/Layout";
 
 function EditVenuePage() {
   const { id } = useParams();
@@ -113,103 +112,103 @@ function EditVenuePage() {
 
   return (
     <>
-      <Header />
-      <Container className="my-5">
-        <h1>Edit Venue</h1>
-        {error && <Alert variant="danger">{error}</Alert>}
+      <Layout>
+        <Container className="my-5">
+          <h1>Edit Venue</h1>
+          {error && <Alert variant="danger">{error}</Alert>}
 
-        <Form onSubmit={handleSave}>
-          <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
+          <Form onSubmit={handleSave}>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="description"
+                rows={4}
+                value={formData.description}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Price (per night)</Form.Label>
+              <Form.Control
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Max Guests</Form.Label>
+              <Form.Control
+                type="number"
+                name="maxGuests"
+                value={formData.maxGuests}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Media URLs (comma separated)</Form.Label>
+              <Form.Control
+                type="text"
+                value={formData.media.join(",")}
+                onChange={(e) =>
+                  setFormData({ ...formData, media: e.target.value.split(",") })
+                }
+              />
+            </Form.Group>
+
+            <h5 className="mt-4">Facilities</h5>
+            <Form.Check
+              type="checkbox"
+              label="WiFi"
+              name="wifi"
+              checked={formData.meta.wifi}
+              onChange={handleMetaChange}
             />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              name="description"
-              rows={4}
-              value={formData.description}
-              onChange={handleChange}
-              required
+            <Form.Check
+              type="checkbox"
+              label="Parking"
+              name="parking"
+              checked={formData.meta.parking}
+              onChange={handleMetaChange}
             />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Price (per night)</Form.Label>
-            <Form.Control
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
+            <Form.Check
+              type="checkbox"
+              label="Breakfast included"
+              name="breakfast"
+              checked={formData.meta.breakfast}
+              onChange={handleMetaChange}
             />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Max Guests</Form.Label>
-            <Form.Control
-              type="number"
-              name="maxGuests"
-              value={formData.maxGuests}
-              onChange={handleChange}
-              required
+            <Form.Check
+              type="checkbox"
+              label="Pets allowed"
+              name="pets"
+              checked={formData.meta.pets}
+              onChange={handleMetaChange}
             />
-          </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Media URLs (comma separated)</Form.Label>
-            <Form.Control
-              type="text"
-              value={formData.media.join(",")}
-              onChange={(e) =>
-                setFormData({ ...formData, media: e.target.value.split(",") })
-              }
-            />
-          </Form.Group>
-
-          <h5 className="mt-4">Facilities</h5>
-          <Form.Check
-            type="checkbox"
-            label="WiFi"
-            name="wifi"
-            checked={formData.meta.wifi}
-            onChange={handleMetaChange}
-          />
-          <Form.Check
-            type="checkbox"
-            label="Parking"
-            name="parking"
-            checked={formData.meta.parking}
-            onChange={handleMetaChange}
-          />
-          <Form.Check
-            type="checkbox"
-            label="Breakfast included"
-            name="breakfast"
-            checked={formData.meta.breakfast}
-            onChange={handleMetaChange}
-          />
-          <Form.Check
-            type="checkbox"
-            label="Pets allowed"
-            name="pets"
-            checked={formData.meta.pets}
-            onChange={handleMetaChange}
-          />
-
-          <Button type="submit" disabled={saving}>
-            {saving ? "Saving..." : "Save Changes"}
-          </Button>
-        </Form>
-      </Container>
-      <Footer />
+            <Button type="submit" disabled={saving}>
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+          </Form>
+        </Container>
+      </Layout>
     </>
   );
 }
