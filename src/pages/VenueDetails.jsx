@@ -1,15 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Modal from "react-bootstrap/Modal";
 import Carousel from "react-bootstrap/Carousel";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
 import ReservationBox from "../components/ReservationBox";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 
 function VenueDetails() {
   const { id } = useParams();
@@ -65,8 +64,7 @@ function VenueDetails() {
   if (!venue) return <p>Venue not found.</p>;
 
   return (
-    <main className="homepage">
-      <Header />
+    <Layout>
       <Container className="my-5">
         <Row>
           <Col md={8}>
@@ -170,9 +168,7 @@ function VenueDetails() {
           </Carousel>
         </Modal.Body>
       </Modal>
-
-      <Footer />
-    </main>
+    </Layout>
   );
 }
 
