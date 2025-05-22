@@ -26,4 +26,45 @@ $secundary: rgba(185, 206, 211, 1);
   padding: 20px;
 }
 
+//Venue Card
+
+.venue-card {
+  border: 1px solid #343a40;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  background-color: #f8f9fa;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.venue-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.venue-card-img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.venue-card-body {
+  padding: 1rem;
+}
+
+@media (max-width: 576px) {
+  .venue-card-img {
+    height: 160px;
+  }
+
+  .venue-card-body {
+    padding: 0.75rem;
+  }
+
+  .venue-card-body h5,
+  .venue-card-body .card-title {
+    font-size: 1.1rem;
+  }
+}
+
 @import "bootstrap/scss/bootstrap";

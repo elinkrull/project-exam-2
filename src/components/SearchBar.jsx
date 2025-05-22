@@ -7,7 +7,7 @@ function SearchBar({ searchTerm, setSearchTerm }) {
       <InputGroup.Text id="search-label">🔍</InputGroup.Text>
       <Form.Control
         type="text"
-        placeholder="Search by name or city..."
+        placeholder="Search for venue"
         aria-label="Search"
         aria-describedby="search-label"
         value={searchTerm}
