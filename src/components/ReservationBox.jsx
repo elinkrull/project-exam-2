@@ -71,26 +71,34 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
 
   return (
     <div className="reservation-box p-4 border rounded shadow-sm bg-light">
-      <h5>Make a Reservation</h5>
-      <DateRange
-        ranges={range}
-        onChange={(item) => setRange([item.selection])}
-        minDate={new Date()}
-        disabledDates={bookedDates}
-      />
-      <Form.Group className="mb-3">
-        <Form.Label>Number of guests</Form.Label>
-        <Form.Control
-          type="number"
-          min={1}
-          max={venue.maxGuests}
-          value={guests}
-          onChange={(e) => setGuests(parseInt(e.target.value))}
-        />
-      </Form.Group>
-      <Button className="mt-3 w-100" onClick={handleReserveClick}>
-        Make a Reservation
-      </Button>
+      <div className="reservation-box-inner text-center">
+        <h5>Make a Reservation</h5>
+        <div className="calendar-wrapper">
+          <DateRange
+            ranges={range}
+            onChange={(item) => setRange([item.selection])}
+            minDate={new Date()}
+            disabledDates={bookedDates}
+            months={1}
+            direction="vertical"
+            showDateDisplay={false}
+          />
+        </div>
+        <Form.Group className="mb-3 text-start">
+          <Form.Label>Number of guests</Form.Label>
+          <Form.Control
+            type="number"
+            min={1}
+            max={venue.maxGuests}
+            value={guests}
+            onChange={(e) => setGuests(parseInt(e.target.value))}
+          />
+        </Form.Group>
+        <Button className="mt-3 w-100" onClick={handleReserveClick}>
+          Make a Reservation
+        </Button>
+        <p className="mt-2 text-grey">You will not be charged any costs yet</p>
+      </div>
 
       <ToastContainer position="top-end" className="p-3">
         <Toast

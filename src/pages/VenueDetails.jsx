@@ -66,8 +66,8 @@ function VenueDetails() {
   return (
     <Layout>
       <Container className="my-5">
-        <Row>
-          <Col md={8}>
+        <Row className="gy-4">
+          <Col xs={12} lg={7} xl={8}>
             <div className="venue-images mb-4">
               {venue.media && venue.media.length > 0 ? (
                 <>
@@ -130,7 +130,7 @@ function VenueDetails() {
 
           {/* Reservation Box */}
           {!fromProfile && (
-            <Col md={4}>
+            <Col xs={12} lg={5} xl={4}>
               <ReservationBox
                 venue={venue}
                 bookedDates={bookedDates}
