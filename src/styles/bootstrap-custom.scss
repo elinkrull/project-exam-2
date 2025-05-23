@@ -26,7 +26,7 @@ $secundary: rgba(185, 206, 211, 1);
   padding: 20px;
 }
 
-//Venue Card
+// Venue Card
 
 .venue-card {
   border: 1px solid #343a40;
@@ -67,7 +67,7 @@ $secundary: rgba(185, 206, 211, 1);
   }
 }
 
-//VenueDetails Page
+// VenueDetails Page
 
 .venue-images img {
   max-width: 100%;
@@ -122,16 +122,40 @@ $secundary: rgba(185, 206, 211, 1);
   max-width: 100%;
 }
 
-//Reservation Box
+// Reservation Box
 
 .reservation-box {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   margin: 0 auto;
   background-color: #f8f9fa;
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Remove react-date-range default blue background from selected range */
+.reservation-box {
+  .rdrDay.rdrSelected,
+  .rdrDay.rdrInRange,
+  .rdrDay.rdrStartEdge,
+  .rdrDay.rdrEndEdge {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .rdrDay.rdrSelected .rdrDayNumber span,
+  .rdrDay.rdrInRange .rdrDayNumber span,
+  .rdrDay.rdrStartEdge .rdrDayNumber span,
+  .rdrDay.rdrEndEdge .rdrDayNumber span {
+    background-color: #e0e0e0 !important; // light gray highlight
+    color: #000 !important;
+    border-radius: 50% !important;
+  }
+
+  .rdrDayNumber span {
+    color: #000 !important; // ensure all day numbers are black
+  }
 }
 
 //Responsive
