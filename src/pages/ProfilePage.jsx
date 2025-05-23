@@ -6,6 +6,7 @@ import EditProfileModal from "../components/EditProfileModal";
 import MyVenues from "../components/MyVenues";
 import MyBookings from "../components/MyBookings";
 import Layout from "../components/Layout";
+import VenueBookings from "../components/VenueBookings";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -25,7 +26,7 @@ function ProfilePage() {
       if (parsedUser.venueManager) {
         // Fetch venues created by manager
         const venuesRes = await fetch(
-          `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues`,
+          `https://v2.api.noroff.dev/holidaze/profiles/${parsedUser.name}/venues?_bookings=true`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -186,11 +187,14 @@ function ProfilePage() {
                     <>
                       <h3 className="mb-3">My Venues</h3>
                       {venues.length > 0 ? (
-                        <MyVenues
-                          venues={venues}
-                          onEdit={(id) => navigate(`/edit-venue/${id}`)}
-                          onDelete={handleDeleteVenue}
-                        />
+                        <>
+                          <MyVenues
+                            venues={venues}
+                            onEdit={(id) => navigate(`/edit-venue/${id}`)}
+                            onDelete={handleDeleteVenue}
+                          />
+                          <VenueBookings venues={venues} />
+                        </>
                       ) : (
                         <p>No venues found.</p>
                       )}

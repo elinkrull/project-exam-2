@@ -17,8 +17,9 @@ function Home() {
   const fetchVenues = useCallback(async () => {
     try {
       const response = await fetch(
-        `https://v2.api.noroff.dev/holidaze/venues?sort=created&sortOrder=desc&limit=12&page=${page}`
+        `https://v2.api.noroff.dev/holidaze/venues?sort=created&sortOrder=desc&limit=100`
       );
+
       const { data } = await response.json();
 
       const newVenues = data.filter((venue) => {
@@ -40,22 +41,6 @@ function Home() {
   useEffect(() => {
     fetchVenues();
   }, [fetchVenues]);
-
-  // Infinite scroll logic
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && hasMore) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    const current = loaderRef.current;
-    if (current) observer.observe(current);
-    return () => current && observer.unobserve(current);
-  }, [hasMore]);
 
   // Filtered venues (search)
   const filteredVenues = venues.filter((venue) => {
