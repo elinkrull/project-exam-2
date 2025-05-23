@@ -66,33 +66,38 @@ function VenueDetails() {
   return (
     <Layout>
       <Container className="my-5">
-        <Row>
-          <Col md={8}>
-            {venue.media?.length > 0 ? (
-              <div className="venue-media mb-4 d-flex flex-wrap gap-3">
-                {venue.media.map((media, index) => (
-                  <img
-                    key={index}
-                    src={media.url}
-                    alt={media.alt || `Venue image ${index + 1}`}
-                    onClick={() => handleImageClick(index)}
-                    style={{
-                      maxWidth: "200px",
-                      height: "auto",
-                      cursor: "pointer",
-                      borderRadius: "8px",
-                      boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-                    }}
-                  />
-                ))}
-              </div>
-            ) : (
-              <img
-                src="https://via.placeholder.com/600x300?text=No+Image"
-                alt="No media available"
-                className="img-fluid mb-4"
-              />
-            )}
+        <Row className="gy-4">
+          <Col xs={12} lg={7} xl={8}>
+            <div className="venue-images mb-4">
+              {venue.media && venue.media.length > 0 ? (
+                <>
+                  <div
+                    className="hero-image"
+                    onClick={() => handleImageClick(0)}>
+                    <img
+                      src={venue.media[0].url}
+                      alt={venue.media[0].alt || "Main image"}
+                    />
+                  </div>
+                  <div className="image-grid mt-3">
+                    {venue.media.slice(1, 5).map((media, index) => (
+                      <img
+                        key={index + 1}
+                        src={media.url}
+                        alt={media.alt || `Venue image ${index + 2}`}
+                        onClick={() => handleImageClick(index + 1)}
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <img
+                  src="https://via.placeholder.com/600x300?text=No+Image"
+                  alt="No media available"
+                  className="no-image-placeholder"
+                />
+              )}
+            </div>
 
             <h1>{venue.name}</h1>
             <p>
@@ -125,7 +130,7 @@ function VenueDetails() {
 
           {/* Reservation Box */}
           {!fromProfile && (
-            <Col md={4}>
+            <Col xs={12} lg={5} xl={4}>
               <ReservationBox
                 venue={venue}
                 bookedDates={bookedDates}
