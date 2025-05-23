@@ -12,6 +12,7 @@ export default function VenueBookings({ venues }) {
               <ul className="mb-0">
                 {venue.bookings.map((booking) => (
                   <li key={booking.id}>
+                    👤 <strong>{booking.customer?.name}</strong> —{" "}
                     {booking.guests} guest(s) —{" "}
                     {new Date(booking.dateFrom).toLocaleDateString()} to{" "}
                     {new Date(booking.dateTo).toLocaleDateString()}
