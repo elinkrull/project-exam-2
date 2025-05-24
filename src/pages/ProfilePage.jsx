@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Row, Col, Button, Card, Spinner } from "react-bootstrap";
-import NewVenueModal from "../components/NewVenueModal";
 import EditProfileModal from "../components/EditProfileModal";
 import MyVenues from "../components/MyVenues";
 import MyBookings from "../components/MyBookings";
 import Layout from "../components/Layout";
 import VenueBookings from "../components/VenueBookings";
+import { Link } from "react-router-dom";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);
   const [venues, setVenues] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showNewVenueForm, setShowNewVenueForm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
   const navigate = useNavigate();
@@ -87,13 +86,6 @@ function ProfilePage() {
     fetchData(parsedUser, accessToken);
   }, [navigate, location.key]);
 
-  const handleVenueCreated = () => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const accessToken = localStorage.getItem("accessToken");
-    fetchData(storedUser, accessToken);
-    setShowNewVenueForm(false);
-  };
-
   const handleDeleteVenue = async (venueId) => {
     const confirm = window.confirm(
       "Are you sure you want to delete this venue?"
@@ -166,18 +158,11 @@ function ProfilePage() {
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <h2>My Profile</h2>
                 {user.venueManager && (
-                  <Button
-                    onClick={() => setShowNewVenueForm(!showNewVenueForm)}>
-                    {showNewVenueForm ? "Cancel" : "Add new Venue"}
+                  <Button as={Link} to="/create-venue">
+                    Add Venue
                   </Button>
                 )}
               </div>
-
-              <NewVenueModal
-                show={showNewVenueForm}
-                handleClose={() => setShowNewVenueForm(false)}
-                onVenueCreated={handleVenueCreated}
-              />
 
               {loading ? (
                 <Spinner animation="border" />

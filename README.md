@@ -1,5 +1,7 @@
 # Holidaze - Project Exam 2
 
+## 📸 Skjermbilde
+
 ![Skjermdump av appen](./public/screenshot.png)
 
 ## Built with
