@@ -9,6 +9,7 @@ import ReservationBox from "../components/ReservationBox";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
+import "../styles/bootstrap-custom.scss";
 
 function VenueDetails() {
   const { id } = useParams();

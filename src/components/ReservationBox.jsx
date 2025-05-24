@@ -153,8 +153,10 @@ function ReservationBox({ venue, bookedDates }) {
           />
         </Form.Group>
         <p className="mt-2">
-          <strong>Total Price:</strong> ${venue.price} x {nights} night
-          {nights > 1 ? "s" : ""} = <strong>${totalPrice}</strong>
+          <strong>Total Nights:</strong> {nights} nights
+        </p>
+        <p className="mt-2">
+          <strong>Total Price:</strong> ${totalPrice}
         </p>
 
         <Button className="mt-3 w-100" onClick={handleReserveClick}>
@@ -199,10 +201,10 @@ function ReservationBox({ venue, bookedDates }) {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="primary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleConfirm}>
+          <Button variant="secondary" onClick={handleConfirm}>
             Confirm
           </Button>
         </Modal.Footer>
