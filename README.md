@@ -1,6 +1,6 @@
 # Holidaze - Project Exam 2
 
-<img width="" alt="Skjermbilde" src="" />
+![Skjermdump av appen](./public/screenshot.png)
 
 ## Built with
 
