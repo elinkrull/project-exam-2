@@ -97,7 +97,7 @@ function Home() {
           <>
             <Row className="g-4">
               {currentVenues.map((venue) => (
-                <Col key={venue.id} sm={12} md={6} lg={4}>
+                <Col key={venue.id} sm={12} md={6} lg={3}>
                   <Link
                     to={`/venue/${venue.id}`}
                     style={{ textDecoration: "none", color: "inherit" }}>
