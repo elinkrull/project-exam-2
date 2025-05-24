@@ -28,8 +28,9 @@ function Home() {
       try {
         while (true) {
           const res = await fetch(
-            `https://v2.api.noroff.dev/holidaze/venues?limit=${limit}&page=${page}`
+            `https://v2.api.noroff.dev/holidaze/venues?limit=${limit}&page=${page}&sort=created&sortOrder=desc`
           );
+
           const { data } = await res.json();
 
           if (data.length === 0) break;
