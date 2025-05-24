@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Form, Button, Modal, Toast, ToastContainer } from "react-bootstrap";
 import { DateRange } from "react-date-range";
+import { useNavigate } from "react-router-dom";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import { useNavigate } from "react-router-dom";
+import "../styles/bootstrap-custom.scss";
 
-function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
+function ReservationBox({ venue, bookedDates }) {
   const [range, setRange] = useState([
     {
       startDate: new Date(),
@@ -17,6 +18,23 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
   const [showModal, setShowModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
+
+  // Convert to string set for faster lookup
+  const bookedDateSet = new Set(
+    bookedDates.map((d) => new Date(d).toDateString())
+  );
+
+  // Function to check if selected range overlaps booked dates
+  const isOverlappingBooking = (startDate, endDate) => {
+    const current = new Date(startDate);
+    while (current <= endDate) {
+      if (bookedDateSet.has(current.toDateString())) {
+        return true;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    return false;
+  };
 
   // ✅ Check if user is logged in based on localStorage
   const isLoggedIn = !!localStorage.getItem("accessToken");
@@ -69,6 +87,12 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
     }
   };
 
+  // Calculate number of nights and total price
+  const start = range[0].startDate;
+  const end = range[0].endDate;
+  const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) || 1;
+  const totalPrice = nights * venue.price;
+
   return (
     <div className="reservation-box p-4 border rounded shadow-sm bg-light">
       <div className="reservation-box-inner text-center">
@@ -76,12 +100,46 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
         <div className="calendar-wrapper">
           <DateRange
             ranges={range}
-            onChange={(item) => setRange([item.selection])}
+            onChange={(item) => {
+              const start = item.selection.startDate;
+              const end = item.selection.endDate;
+
+              if (isOverlappingBooking(start, end)) {
+                alert("Selected dates overlap with existing bookings.");
+                return; // prevent selecting overlapping dates
+              }
+
+              setRange([item.selection]);
+            }}
             minDate={new Date()}
             disabledDates={bookedDates}
             months={1}
             direction="vertical"
             showDateDisplay={false}
+            dayContentRenderer={(date) => {
+              const isBooked = bookedDateSet.has(date.toDateString());
+              const isSelected =
+                date >= range[0].startDate && date <= range[0].endDate;
+
+              return (
+                <div
+                  style={{
+                    backgroundColor: isBooked
+                      ? "#fdecea"
+                      : isSelected
+                      ? "#e0e0e0"
+                      : "transparent",
+                    borderRadius: "50%",
+                    width: "32px",
+                    height: "32px",
+                    lineHeight: "32px",
+                    margin: "auto",
+                    color: "#000",
+                  }}>
+                  {date.getDate()}
+                </div>
+              );
+            }}
           />
         </div>
         <Form.Group className="mb-3 text-start">
@@ -94,6 +152,13 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
             onChange={(e) => setGuests(parseInt(e.target.value))}
           />
         </Form.Group>
+        <p className="mt-2">
+          <strong>Total Nights:</strong> {nights} nights
+        </p>
+        <p className="mt-2">
+          <strong>Total Price:</strong> ${totalPrice}
+        </p>
+
         <Button className="mt-3 w-100" onClick={handleReserveClick}>
           Make a Reservation
         </Button>
@@ -131,12 +196,15 @@ function ReservationBox({ venue, bookedDates, onBookingConfirmed }) {
           <p>
             <strong>Venue:</strong> {venue.name}
           </p>
+          <p>
+            <strong>Total Price:</strong> ${totalPrice}
+          </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="primary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleConfirm}>
+          <Button variant="secondary" onClick={handleConfirm}>
             Confirm
           </Button>
         </Modal.Footer>

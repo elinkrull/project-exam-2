@@ -17,7 +17,7 @@
     "react-date-range": "^2.0.1",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.3",
-    "sass": "^1.87.0"
+    "sass": "^1.89.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
