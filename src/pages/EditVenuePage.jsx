@@ -102,7 +102,7 @@ function EditVenuePage() {
       if (!res.ok)
         throw new Error(json.errors?.[0]?.message || "Failed to update venue");
 
-      navigate("/profile");
+      navigate(`/venue/${id}`);
     } catch (err) {
       setError(err.message);
     } finally {
