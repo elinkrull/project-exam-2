@@ -137,7 +137,7 @@ function ProfilePage() {
         <Container className="mt-5">
           <Row>
             <Col md={3}>
-              <Card className="text-center mb-4">
+              <Card className="text-center mb-4 border-0 shadow-none">
                 <Card.Img
                   variant="top"
                   src={
@@ -168,7 +168,7 @@ function ProfilePage() {
                 {user.venueManager && (
                   <Button
                     onClick={() => setShowNewVenueForm(!showNewVenueForm)}>
-                    {showNewVenueForm ? "Cancel" : "Add Venue"}
+                    {showNewVenueForm ? "Cancel" : "Add new Venue"}
                   </Button>
                 )}
               </div>

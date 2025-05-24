@@ -9,12 +9,12 @@ function Header() {
   };
 
   return (
-    <header className="header">
+    <div className="header">
       <h1 className="logo" onClick={goToHome} style={{ cursor: "pointer" }}>
         Holidaze
       </h1>
       <Navbar />
-    </header>
+    </div>
   );
 }
 

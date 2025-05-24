@@ -51,7 +51,9 @@ function NavBar() {
         <Container className="d-flex justify-content-end align-items-center py-3">
           {user ? (
             <div className="d-flex align-items-center gap-3">
-              <span className="fw-semibold text-nowrap">{user.name}</span>
+              <span className="fw-semibold text-white text-nowrap">
+                {user.name}
+              </span>
 
               <span role="button" onClick={goToProfile}>
                 <Image
@@ -65,7 +67,7 @@ function NavBar() {
               </span>
 
               <span
-                className="fw-semibold"
+                className="fw-semibold text-white"
                 role="button"
                 onClick={handleLogout}
                 style={{ cursor: "pointer" }}>

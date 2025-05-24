@@ -201,10 +201,10 @@ function ReservationBox({ venue, bookedDates }) {
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="secondary" onClick={handleConfirm}>
+          <Button variant="primary" onClick={handleConfirm}>
             Confirm
           </Button>
         </Modal.Footer>

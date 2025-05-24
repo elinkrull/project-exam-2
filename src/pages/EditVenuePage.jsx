@@ -56,7 +56,10 @@ function EditVenuePage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: ["price", "maxGuests"].includes(name) ? Number(value) : value,
+    }));
   };
 
   const handleMetaChange = (e) => {
@@ -99,7 +102,7 @@ function EditVenuePage() {
       if (!res.ok)
         throw new Error(json.errors?.[0]?.message || "Failed to update venue");
 
-      navigate("/profile"); // or show a success alert
+      navigate("/profile");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -163,14 +166,66 @@ function EditVenuePage() {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Media URLs (comma separated)</Form.Label>
+              <Form.Label>Media</Form.Label>
+              <div className="d-flex flex-wrap gap-3 mb-2">
+                {formData.media.map((url, index) => (
+                  <div
+                    key={index}
+                    className="position-relative"
+                    style={{ width: "100px" }}>
+                    <img
+                      src={url}
+                      alt={`Media ${index}`}
+                      style={{
+                        width: "100px",
+                        height: "80px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          media: prev.media.filter((_, i) => i !== index),
+                        }))
+                      }
+                      style={{
+                        position: "absolute",
+                        top: "-8px",
+                        right: "-8px",
+                        borderRadius: "50%",
+                        padding: "0.25rem 0.5rem",
+                        fontSize: "0.75rem",
+                      }}>
+                      ×
+                    </Button>
+                  </div>
+                ))}
+              </div>
+
               <Form.Control
                 type="text"
-                value={formData.media.join(",")}
-                onChange={(e) =>
-                  setFormData({ ...formData, media: e.target.value.split(",") })
-                }
+                placeholder="Add image URL"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    const newUrl = e.target.value.trim();
+                    if (newUrl) {
+                      setFormData((prev) => ({
+                        ...prev,
+                        media: [...prev.media, newUrl],
+                      }));
+                      e.target.value = "";
+                    }
+                  }
+                }}
               />
+              <Form.Text className="text-muted">
+                Press Enter to add image
+              </Form.Text>
             </Form.Group>
 
             <h5 className="mt-4">Facilities</h5>
