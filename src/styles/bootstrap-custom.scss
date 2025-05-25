@@ -1,9 +1,8 @@
 $link-color: #090808;
-$primary: rgba(222, 235, 238, 1);
-$secundary: rgba(185, 206, 211, 1);
+$primary: rgb(70, 95, 100);
+$secondary: rgb(212, 224, 227);
 
 .home {
-  background-color: $primary;
   padding: 2rem;
 }
 
@@ -11,18 +10,20 @@ $secundary: rgba(185, 206, 211, 1);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(222, 235, 238, 1);
-  padding: 30px;
+  background-color: $primary;
+  padding: 10px;
 }
 
 .logo {
+  color: white;
   padding-left: 120px;
 }
 
 .footer {
   display: flex;
   justify-content: center;
-  background-color: rgba(222, 235, 238, 1);
+  background-color: $primary;
+  color: white;
   padding: 20px;
 }
 

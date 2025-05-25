@@ -51,7 +51,10 @@ function NavBar() {
         <Container className="d-flex justify-content-end align-items-center py-3">
           {user ? (
             <div className="d-flex align-items-center gap-3">
-              {/* Profile Image as a clickable element to navigate to the profile page */}
+              <span className="fw-semibold text-white text-nowrap">
+                {user.name}
+              </span>
+
               <span role="button" onClick={goToProfile}>
                 <Image
                   src={user.avatar || "https://placehold.co/40x40?text=?"}
@@ -62,8 +65,9 @@ function NavBar() {
                   style={{ objectFit: "cover", cursor: "pointer" }}
                 />
               </span>
+
               <span
-                className="fw-semibold text-danger"
+                className="fw-semibold text-white"
                 role="button"
                 onClick={handleLogout}
                 style={{ cursor: "pointer" }}>
