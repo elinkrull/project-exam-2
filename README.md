@@ -16,7 +16,7 @@
 
 ## Goal
 
-To take the skills learned over the last two years and take on an extensive project where the finished product should reflect the candidate’s general development capabilities, in addition to visual and technical skills.
+To take the skills learned over the last two years and take on an extensive project where the finished product should reflect the general development capabilities, in addition to visual and technical skills.
 
 ## Brief
 
@@ -72,8 +72,12 @@ https://github.com/elinkrull/project-exam-2.git
 
 <pre>npm run dev</pre>
 
-Live website:
+Live website on Netlify:
+
+https://holidaze-project-exam-2-etj.netlify.app/
 
 ## Contact
 
-[My e-mail address](eth_86@hotmail.com)
+Elin Thoen Jakobsen
+(eth_86@hotmail.com)
+
