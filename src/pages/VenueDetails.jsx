@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Carousel from "react-bootstrap/Carousel";
@@ -6,8 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Modal from "react-bootstrap/Modal";
 import ReservationBox from "../components/ReservationBox";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import "../styles/bootstrap-custom.scss";
 
@@ -44,9 +42,12 @@ function VenueDetails() {
           const start = new Date(booking.dateFrom);
           const end = new Date(booking.dateTo);
           const range = [];
-          for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          for (let d = new Date(start); d <= end; ) {
             range.push(new Date(d));
+            d = new Date(d);
+            d.setDate(d.getDate() + 1);
           }
+
           return range;
         });
 

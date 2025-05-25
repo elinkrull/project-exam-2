@@ -12,7 +12,6 @@ const CustomToggle = forwardRef(({ onClick }, ref) => (
       onClick(e);
     }}
     id="dropdown-custom-toggle"
-    className="btn btn-light border-0 fs-3"
     aria-label="Toggle menu">
     ☰
   </button>
