@@ -14,6 +14,10 @@ function ProfilePage() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [selectedVenueId, setSelectedVenueId] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,18 +90,21 @@ function ProfilePage() {
     fetchData(parsedUser, accessToken);
   }, [navigate, location.key]);
 
-  const handleDeleteVenue = async (venueId) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this venue?"
-    );
-    if (!confirm) return;
+  const handleDeleteVenue = (venueId) => {
+    setSelectedVenueId(venueId);
+    setShowConfirmDelete(true);
+  };
+
+  const confirmDeleteVenue = async () => {
+    setDeleteMessage("");
+    setDeleteError("");
 
     const accessToken = localStorage.getItem("accessToken");
     const apiKey = localStorage.getItem("apiKey");
 
     try {
       const res = await fetch(
-        `https://v2.api.noroff.dev/holidaze/venues/${venueId}`,
+        `https://v2.api.noroff.dev/holidaze/venues/${selectedVenueId}`,
         {
           method: "DELETE",
           headers: {
@@ -112,12 +119,15 @@ function ProfilePage() {
         throw new Error(err.errors?.[0]?.message || "Delete failed");
       }
 
-      // Refresh data after deletion
+      setDeleteMessage("Venue deleted successfully.");
       const storedUser = JSON.parse(localStorage.getItem("user"));
       fetchData(storedUser, accessToken);
     } catch (error) {
       console.error("Delete failed:", error.message);
-      alert("Failed to delete venue.");
+      setDeleteError("Failed to delete venue. Please try again.");
+    } finally {
+      setShowConfirmDelete(false);
+      setSelectedVenueId(null);
     }
   };
 
@@ -127,6 +137,17 @@ function ProfilePage() {
     <>
       <Layout>
         <Container className="mt-5">
+          {deleteMessage && (
+            <div className="mb-3">
+              <div className="alert alert-success">{deleteMessage}</div>
+            </div>
+          )}
+
+          {deleteError && (
+            <div className="mb-3">
+              <div className="alert alert-danger">{deleteError}</div>
+            </div>
+          )}
           <Row>
             <Col md={3}>
               <Card className="text-center mb-4 border-0 shadow-none">
@@ -155,10 +176,9 @@ function ProfilePage() {
             </Col>
 
             <Col md={9}>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2>My Profile</h2>
+              <div className="d-flex justify-content-end mb-4">
                 {user.venueManager && (
-                  <Button as={Link} to="/create-venue">
+                  <Button as={Link} to="/create-venue" className="ms-auto">
                     Add Venue
                   </Button>
                 )}
@@ -207,6 +227,35 @@ function ProfilePage() {
             user={user}
             onUpdate={(updatedUser) => setUser(updatedUser)}
           />
+        )}
+
+        {showConfirmDelete && (
+          <div className="modal show d-block" tabIndex="-1">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Confirm Deletion</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowConfirmDelete(false)}></button>
+                </div>
+                <div className="modal-body">
+                  <p>Are you sure you want to delete this venue?</p>
+                </div>
+                <div className="modal-footer">
+                  <Button
+                    variant="secondary"
+                    onClick={() => setShowConfirmDelete(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant="danger" onClick={confirmDeleteVenue}>
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </Layout>
     </>

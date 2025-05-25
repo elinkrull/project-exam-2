@@ -1,6 +1,6 @@
 $link-color: #090808;
 $primary: rgb(70, 95, 100);
-$secondary: rgb(212, 224, 227);
+$secondary: rgb(134, 177, 185);
 
 .home {
   padding: 2rem;
@@ -17,6 +17,7 @@ $secondary: rgb(212, 224, 227);
 .logo {
   color: white;
   padding-left: 120px;
+  cursor: pointer;
 }
 
 .footer {
@@ -25,6 +26,10 @@ $secondary: rgb(212, 224, 227);
   background-color: $primary;
   color: white;
   padding: 20px;
+}
+
+.container {
+  overflow-x: hidden;
 }
 
 // Venue Card

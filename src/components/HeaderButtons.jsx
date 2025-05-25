@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Container, Image } from "react-bootstrap";
-import RegisterModal from "../pages/RegisterModal";
-import LoginModal from "../pages/LoginModal";
+import RegisterModal from "./RegisterModal";
+import LoginModal from "./LoginModal";
 import { useNavigate } from "react-router-dom";
 
-function NavBar() {
+function HeaderButtons() {
   const [showRegister, setShowRegister] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -78,14 +78,14 @@ function NavBar() {
             <div className="d-flex gap-4 align-items-center">
               <span
                 role="button"
-                className="fw-semibold"
+                className="fw-semibold text-white"
                 style={{ cursor: "pointer" }}
                 onClick={() => setShowRegister(true)}>
                 Register
               </span>
               <span
                 role="button"
-                className="fw-semibold"
+                className="fw-semibold text-white"
                 style={{ cursor: "pointer" }}
                 onClick={() => setShowLogin(true)}>
                 Login
@@ -104,4 +104,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default HeaderButtons;
