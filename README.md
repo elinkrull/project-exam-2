@@ -26,35 +26,50 @@ There are two aspects to this brief: the customer-facing side of the website whe
 ## Terminology
 
 Visitor – a user who has not registered or logged in.
+
 Customer – a user who has registered and logged in as a customer.
+
 Venue Manager – a user who has registered and logged in as a Venue Manager.
 
 ## User Stories
 
 All users:
-• May view a list of Venues.
-• May search for a specific Venue.
-• May view a specific Venue page by id.
-• May register as a customer with a stud.noroff.no email address and password.
-• May register as a Venue Manager with a stud.noroff.no email address and password.
-• May view a calendar with available dates for a Venue. Should dates be booked this must be indicated within the calendar.
+
+- May view a list of Venues.
+
+- May search for a specific Venue.
+
+- May view a specific Venue page by id.
+
+- May register as a customer with a stud.noroff.no email address and password.
+
+- May register as a Venue Manager with a stud.noroff.no email address and password.
+
+- May view a calendar with available dates for a Venue. Should dates be booked this must be indicated within the calendar.
+
 Customers:
-• May login and log out once registered.
-• May create a booking at a Venue.
-• May view their upcoming bookings.
-• May update their avatar/profile picture (a placeholder avatar/profile picture may be provided as a default until the customer updates it).
+
+- May login and log out once registered.
+
+- May create a booking at a Venue.
+
+- May view their upcoming bookings.
+
+- May update their avatar/profile picture (a placeholder avatar/profile picture may be provided as a default until the customer updates it).
 
 Venue Managers:
-• May login and log out once registered.
-• May create a Venue.
-• May edit/update a Venue they manage.
-• May delete a Venue they manage.
-• May view upcoming bookings made at a Venue they manage.
-• May update their avatar/profile picture (a placeholder avatar/profile picture may be provided as a default until the Venue Manager updates it).
-Resources
-Please read the following API documentation and make use of the Swagger tool via the links below to inform your development process:
-• API Documentation
-• API Swagger
+
+- May login and log out once registered.
+
+- May create a Venue.
+
+- May edit/update a Venue they manage.
+
+- May delete a Venue they manage.
+
+- May view upcoming bookings made at a Venue they manage.
+
+- May update their avatar/profile picture (a placeholder avatar/profile picture may be provided as a default until the Venue Manager updates it).
 
 ## Installing
 
@@ -72,7 +87,7 @@ https://github.com/elinkrull/project-exam-2.git
 
 <pre>npm run dev</pre>
 
-Live website on Netlify:
+## Live website on Netlify:
 
 https://holidaze-project-exam-2-etj.netlify.app/
 
@@ -80,4 +95,3 @@ https://holidaze-project-exam-2-etj.netlify.app/
 
 Elin Thoen Jakobsen
 (eth_86@hotmail.com)
-
