@@ -181,13 +181,19 @@ function ReservationBox({ venue, bookedDates }) {
         </Toast>
       </ToastContainer>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        fullscreen="sm-down">
         <Modal.Header closeButton>
           <Modal.Title>Confirm Your Booking</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="text-break px-3">
           <p>
-            <strong>Dates:</strong> {range[0].startDate.toDateString()} –{" "}
+            <strong>Dates:</strong>
+            <br />
+            {range[0].startDate.toDateString()} –{" "}
             {range[0].endDate.toDateString()}
           </p>
           <p>
@@ -200,6 +206,7 @@ function ReservationBox({ venue, bookedDates }) {
             <strong>Total Price:</strong> ${totalPrice}
           </p>
         </Modal.Body>
+
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel

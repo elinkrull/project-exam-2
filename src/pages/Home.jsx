@@ -105,7 +105,7 @@ function Home() {
                       title={venue.name}
                       image={
                         venue.media?.[0]?.url ||
-                        "https://via.placeholder.com/300x180?text=No+Image"
+                        "https://source.unsplash.com/300x180/?house"
                       }
                       price={venue.price}
                       guests={venue.maxGuests}
