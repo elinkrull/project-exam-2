@@ -2,7 +2,7 @@
 
 ## 📸 Skjermbilde
 
-![Skjermdump av appen](./dist/assets/screenshot.png)
+![Skjermdump av appen](./public/screenshot.png)
 
 ## Built with
 
