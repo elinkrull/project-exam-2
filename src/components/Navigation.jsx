@@ -4,7 +4,6 @@ import RegisterModal from "./RegisterModal";
 import LoginModal from "./LoginModal";
 import { useNavigate, Link } from "react-router-dom";
 
-// 🔧 Custom hamburger toggle
 const CustomToggle = forwardRef(({ onClick }, ref) => (
   <button
     ref={ref}
