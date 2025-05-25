@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Container, Row, Col, Button, Card, Spinner } from "react-bootstrap";
 import EditProfileModal from "../components/EditProfileModal";
 import MyVenues from "../components/MyVenues";
 import MyBookings from "../components/MyBookings";
 import Layout from "../components/Layout";
 import VenueBookings from "../components/VenueBookings";
-import { Link } from "react-router-dom";
 
 function ProfilePage() {
   const [user, setUser] = useState(null);

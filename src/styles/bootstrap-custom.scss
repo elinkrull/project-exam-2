@@ -1,6 +1,10 @@
 $link-color: #090808;
 $primary: rgb(70, 95, 100);
-$secondary: rgb(166, 200, 207);
+$secondary: rgba(208, 224, 227, 1);
+
+body {
+  font-family: "Inter", sans-serif;
+}
 
 .home {
   padding: 2rem;
@@ -15,6 +19,7 @@ $secondary: rgb(166, 200, 207);
 }
 
 .logo {
+  font-family: "Josefin Sans", sans-serif;
   color: white;
   padding-left: 120px;
   cursor: pointer;
@@ -24,8 +29,9 @@ $secondary: rgb(166, 200, 207);
   background: none;
   border: none;
   padding: 0;
-  font-size: 2.5rem;
+  font-size: 2.6rem;
   color: white;
+  line-height: 1;
 }
 
 .dropdown-menu {
