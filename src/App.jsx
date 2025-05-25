@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import VenueDetails from "./pages/VenueDetails";
-import LoginModal from "./pages/LoginModal";
+import LoginModal from "./components/LoginModal";
 import EditVenuePage from "./pages/EditVenuePage";
 import NewVenuePage from "./pages/NewVenuePage";
 

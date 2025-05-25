@@ -156,7 +156,6 @@ function ProfilePage() {
 
             <Col md={9}>
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2>My Profile</h2>
                 {user.venueManager && (
                   <Button as={Link} to="/create-venue">
                     Add Venue
