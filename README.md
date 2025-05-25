@@ -75,7 +75,7 @@ Venue Managers:
 
 - Clone the repo
 
-https://github.com/elinkrull/project-exam-2.git
+https://github.com/elinkrull/project-exam-2
 
 - Install dependencies
 
