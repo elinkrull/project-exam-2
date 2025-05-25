@@ -15,14 +15,13 @@ function Home() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all venues from paginated API
   useEffect(() => {
     async function fetchAllVenues() {
       const allVenues = [];
       let page = 1;
       const limit = 100;
 
-      setLoading(true); // Start spiner
+      setLoading(true);
       setError(null);
 
       try {
@@ -39,7 +38,6 @@ function Home() {
           page++;
         }
 
-        // Filter out test/invalid venues
         const filtered = allVenues.filter((venue) => {
           const name = venue.name?.toLowerCase() || "";
           const city = venue.location?.city?.trim();
@@ -54,19 +52,17 @@ function Home() {
         console.error("Failed to fetch venues:", err);
         setError("Failed to load venues. Please try again later.");
       } finally {
-        setLoading(false); // Stop spinner
+        setLoading(false);
       }
     }
 
     fetchAllVenues();
   }, []);
 
-  // Reset pagination on search
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  // Filter venues based on search term
   const filteredVenues = venues.filter((venue) => {
     const name = venue.name?.toLowerCase() || "";
     const city = venue.location?.city?.toLowerCase() || "";
@@ -116,7 +112,6 @@ function Home() {
               ))}
             </Row>
 
-            {/* Pagination */}
             <div className="d-flex justify-content-between align-items-center mt-4">
               <Button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}

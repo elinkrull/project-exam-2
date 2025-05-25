@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import HeaderButtons from "./HeaderButtons";
+import Navigation from "./Navigation";
 
 function Header() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function Header() {
       <h1 className="logo" onClick={goToHome}>
         Holidaze
       </h1>
-      <HeaderButtons />
+      <Navigation />
     </div>
   );
 }
