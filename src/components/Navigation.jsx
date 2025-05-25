@@ -106,22 +106,40 @@ function Navigation() {
               </div>
             </>
           ) : (
-            <div className="d-flex gap-4 align-items-center">
-              <span
-                role="button"
-                className="fw-semibold text-white"
-                style={{ cursor: "pointer" }}
-                onClick={() => setShowRegister(true)}>
-                Register
-              </span>
-              <span
-                role="button"
-                className="fw-semibold text-white"
-                style={{ cursor: "pointer" }}
-                onClick={() => setShowLogin(true)}>
-                Login
-              </span>
-            </div>
+            <>
+              {/* Desktop view */}
+              <div className="d-none d-md-flex gap-4 align-items-center">
+                <span
+                  role="button"
+                  className="fw-semibold text-white"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setShowRegister(true)}>
+                  Register
+                </span>
+                <span
+                  role="button"
+                  className="fw-semibold text-white"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setShowLogin(true)}>
+                  Login
+                </span>
+              </div>
+
+              {/* Mobile view */}
+              <div className="d-md-none">
+                <Dropdown align="end">
+                  <Dropdown.Toggle as={CustomToggle} />
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => setShowRegister(true)}>
+                      Register
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setShowLogin(true)}>
+                      Login
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+            </>
           )}
         </Container>
       </nav>
